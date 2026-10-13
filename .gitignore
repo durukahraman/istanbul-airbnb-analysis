@@ -222,3 +222,5 @@ __marimo__/
 data/*
 !data/.gitkeep
 *.db
+
+.DS_Store
