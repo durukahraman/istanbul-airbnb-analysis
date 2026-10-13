@@ -1,0 +1,11 @@
+name: airbnb
+channels:
+  - defaults
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+dependencies:
+  - jupyter
+  - matplotlib
+  - pandas
+  - python=3.11
+prefix: /opt/anaconda3/envs/airbnb
