@@ -8,4 +8,4 @@ dependencies:
   - matplotlib
   - pandas
   - python=3.11
-prefix: /opt/anaconda3/envs/airbnb
+
