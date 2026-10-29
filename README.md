@@ -41,23 +41,38 @@ The cleaned data is stored in SQLite (`data/airbnb.db`, table `listings`) for SQ
 
 ## Methodology
 
-_To be completed: SQL analysis (Day 3), calendar-based occupancy (Day 4)._
+1. **Cleaning (pandas):** see the table above; cleaned data written to SQLite.
+2. **SQL analysis** (`sql/`, run from `notebooks/03_sql.ipynb`):
+   - district summary with **median price computed via window functions** (SQLite has no `MEDIAN()`), validated against pandas
+   - price by room type, superhost effect (entire homes only, to compare like with like)
+   - share of listings priced above their district median but rated below the district average
+   - **opportunity score** = price index × demand index, where demand = reviews per listing in the last 12 months (Istanbul = 1.00)
+3. **Calendar analysis** (`notebooks/04_calendar.ipynb`): 4.3M calendar rows (365 days × 11,818 listings, 28 Sep 2026 – 28 Sep 2027).
+   - **Occupancy = share of unavailable days in the next 30 days.** Longer windows are distorted: far-future dates look "unavailable" because many hosts only open their calendar a few months ahead.
+   - **Estimated monthly revenue** = median price × 30-day occupancy × 30 (entire homes, districts with ≥30 listings). Not annualised, because seasonality cannot be read from this calendar.
+4. **Robustness check:** both demand proxies (reviews and calendar) point to the same districts.
 
 ## Key Findings
 
-_To be completed (3 findings with numbers)._
+1. **The active market is less than half of what it looks like.** 51% of priced listings received no reviews in the last 12 months. Only 11,818 of 27,232 listings (43%) are active, so the real competition is far smaller than headline numbers suggest.
+2. **Kadıköy offers the best balance of demand and competition.** Entire homes in Kadıköy have 48% occupancy and an estimated ~65,400 TRY monthly revenue, close to Beyoğlu (51%, ~76,100 TRY) but with one-fifth of the competition (720 vs 3,915 listings). Kadıköy also has the highest review-based demand among large districts (1.57× the Istanbul average) and the lowest share of overpriced, under-rated listings (4.7%).
+3. **A higher price does not mean a better investment.** Şişli has one of the highest median prices (5,665 TRY/night) but the lowest occupancy among large districts (36%) and a demand index of 0.62. It looks saturated.
 
-Early observation: more than half (51%) of priced listings received no reviews in the last 12 months. The active market is 11,818 listings, about 43% of what the raw data suggests.
+Supporting result: among entire homes, **superhosts charge 38% more** (median 5,657 vs 4,110 TRY). This is a correlation, not proof that superhost status causes higher prices.
 
 ## Recommendation
 
-_To be completed._
+**Target entire homes in Kadıköy and run them to superhost standards.** Kadıköy combines strong demand, below-average prices (room to grow) and far less competition than Beyoğlu. Beyoğlu is the higher-revenue but more crowded alternative; Şişli should be avoided despite its high prices. Before investing, the estimates should be checked against property purchase prices or rents, which this data does not include.
 
 ## Limitations
 
 - **Snapshot data.** Results reflect a single date (25 September 2026), not a full-year history of listings.
 - **Activity filter excludes new listings.** Listings opened recently that have not yet received a review are removed along with inactive ones.
 - **Occupancy is estimated.** In the calendar, an unavailable day may be booked *or* blocked by the host, so occupancy figures are an upper-bound estimate.
+- **No seasonality.** The calendar is forward-looking and distorted beyond ~30 days, so revenue reflects the October–November period only. Seasonal districts (e.g. Adalar, ranked #1 by reviews but low in October occupancy) may be under- or over-estimated.
+- **Small districts are unreliable.** Sarıyer ranks #1 by estimated revenue but has only 31 entire homes; a few luxury properties can drive the result.
+- **No cost data.** Revenue is gross; purchase price, rent, fees and taxes are not included, so this is not a return-on-investment calculation.
+- **Reviews as a demand proxy.** Review-writing habits may differ between guest types; this is why the calendar was used as a second check.
 - **Listed price ≠ paid price.** Discounts, cleaning fees and seasonal pricing are not captured.
 
 ## Dashboard
