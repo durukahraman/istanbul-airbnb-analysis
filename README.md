@@ -77,7 +77,11 @@ Supporting result: among entire homes, **superhosts charge 38% more** (median 5,
 
 ## Dashboard
 
-_To be added: Tableau Public link and screenshot._
+**[Open the interactive dashboard on Tableau Public](https://public.tableau.com/views/IstanbulAirbnbMarketAnalysis/IstanbulAirbnb)**
+
+![Istanbul Airbnb dashboard](dashboard/dashboard.png)
+
+One page with 4 KPIs (active listings, median price, average rating, 30-day occupancy), a map of active listings coloured by price, and estimated monthly revenue per entire home by district. Click a district bar to filter the map and KPIs.
 
 ## Repository Structure
 
@@ -86,9 +90,11 @@ istanbul-airbnb-analysis/
 ├── data/          # raw and cleaned data (not committed)
 ├── notebooks/
 │   ├── 01_explore.ipynb
-│   └── 02_clean.ipynb
+│   ├── 02_clean.ipynb
+│   ├── 03_sql.ipynb
+│   └── 04_calendar.ipynb
 ├── sql/           # one file per analysis query
-├── dashboard/     # Tableau screenshot
+├── dashboard/     # Tableau screenshot (dashboard.png)
 └── environment.yml
 ```
 
@@ -99,4 +105,5 @@ conda env create -f environment.yml
 conda activate airbnb
 # download listings.csv and calendar.csv into data/
 jupyter notebook
+# run notebooks 01 → 04 in order
 ```
